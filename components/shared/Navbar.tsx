@@ -8,22 +8,22 @@ import Image from "next/image";
 
 const menuItems = [
     {
-        name: "Security",
+        name: "Strona główna",
         icon: <Shield className="w-5 h-auto"/>,
         redirect: "/",
     },
     {
-        name: "Learn",
+        name: "Oferta",
         icon: <Zap className="w-5 h-auto"/>,
         redirect: "/",
     },
     {
-        name: "Explore",
+        name: "O nas",
         icon: <Globe className="w-5 h-auto"/>,
         redirect: "/",
     },
     {
-        name: "Support",
+        name: "Kontakt",
         icon: <MessageSquare className="w-5 h-auto"/>,
         redirect: "/",
     },
@@ -100,7 +100,7 @@ const Navbar = () => {
                         href={"/dashboard"}
                         className="flex items-center justify-center shadow not-dark:text-muted bg-primary gap-2.5 rounded-4xl py-4 px-8 transition-all hover:opacity-80 text-sm md:text-base duration-200 hover:scale-95"
                     >
-                        Dashboard
+                        Zamów
                     </Link>
                     <Button
                         className="rounded-full size-12 bg-white hover:bg-white md:hidden"

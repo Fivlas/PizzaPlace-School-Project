@@ -1,93 +1,123 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { MoveRight, PhoneCall, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { Button } from "../ui/button";
+import { Suspense, useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+// @ts-ignore
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+// @ts-ignore
+import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 
-function Hero() {
-    const [titleNumber, setTitleNumber] = useState(0);
-    const titles = useMemo(
-        () => ["amazing", "new", "wonderful", "beautiful", "smart"],
-        []
-    );
+const PizzaModel = () => {
+    const [model, setModel] = useState<THREE.Group | null>(null);
+    const cutterRef = useRef<THREE.Mesh | null>(null);
+    const pizzaRef = useRef<THREE.Mesh | null>(null);
+    const timeRef = useRef(0);
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            if (titleNumber === titles.length - 1) {
-                setTitleNumber(0);
-            } else {
-                setTitleNumber(titleNumber + 1);
-            }
-        }, 2000);
-        return () => clearTimeout(timeoutId);
-    }, [titleNumber, titles]);
+        const loadModel = async () => {
+            const mtlLoader = new MTLLoader();
+            mtlLoader.setPath("/PizzaModel/");
+            //@ts-ignore
+            mtlLoader.load("pizza.mtl", (materials) => {
+                materials.preload();
 
+                const objLoader = new OBJLoader();
+                objLoader.setMaterials(materials);
+                objLoader.setPath("/PizzaModel/");
+                // @ts-ignore
+                objLoader.load("pizza.obj", (object) => {
+                    const textureLoader = new THREE.TextureLoader();
+                    const texture = textureLoader.load("PizzaModel/Textures/foodkit-colormap.png");
+                    texture.colorSpace = THREE.SRGBColorSpace;
+
+                    object.traverse((child: any) => {
+                        if (child.isMesh) {
+                            child.material = new THREE.MeshBasicMaterial({
+                                map: texture,
+                                reflectivity: 1,
+                                color: 0xffffff,
+                            });
+                            child.material.needsUpdate = true;
+
+                            if (child.name === "pizza-cutter") {
+                                cutterRef.current = child;
+                            }
+
+                            if (child.name === "pizza") {
+                                pizzaRef.current = child;
+                            }
+                        }
+                    });
+
+                    setModel(object);
+                });
+            });
+        };
+
+        loadModel();
+    }, []);
+
+    useFrame((_, delta) => {
+        if (cutterRef.current) {
+            timeRef.current += delta;
+            const rangeStart = 0.46;
+            const rangeEnd = -0.34;
+            const amplitude = rangeEnd - rangeStart;
+            const cosX = ((Math.cos(timeRef.current * 2) + 1) / 2) * amplitude + rangeStart;
+            cutterRef.current.position.x = cosX;
+        }
+    });
+
+    return model ? (
+        <primitive object={model} scale={7} position={[0, 0, 0]} rotation={[0.438407346410207, Math.PI * 2, 0]} />
+    ) : null;
+};
+
+const Hero = () => {
     return (
-        <div className="w-full h-full">
-            <div className="flex gap-8 py-20 lg:pt-30 lg:pb-40 items-center justify-center flex-col">
-                <div>
-                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/80 text-muted dark:text-white">
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        <span className="text-sm font-medium">
-                            Hackhaton Edition {new Date().getFullYear()}
-                        </span>
-                    </div>
-                </div>
-                <div className="flex gap-4 flex-col">
-                    <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular">
-                        <span className="text-spektr-cyan-50">
-                            This is something
-                        </span>
-                        <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
-                            &nbsp;
-                            {titles.map((title, index) => (
-                                <motion.span
-                                    key={index}
-                                    className="absolute font-semibold"
-                                    initial={{ opacity: 0, y: "-100" }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 50,
-                                    }}
-                                    animate={
-                                        titleNumber === index
-                                            ? {
-                                                  y: 0,
-                                                  opacity: 1,
-                                              }
-                                            : {
-                                                  y:
-                                                      titleNumber > index
-                                                          ? -150
-                                                          : 150,
-                                                  opacity: 0,
-                                              }
-                                    }
-                                >
-                                    {title}
-                                </motion.span>
-                            ))}
-                        </span>
-                    </h1>
-
-                    <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
-                        Managing a small business today is already tough. Avoid
-                        further complications by ditching outdated, tedious
-                        trade methods. Our goal is to streamline SMB trade,
-                        making it easier and faster than ever.
-                    </p>
-                </div>
-                <div className="flex flex-row gap-3">
-                    <Button size="lg" className="gap-4" variant="outline">
-                        Jump on a call <PhoneCall className="w-4 h-4" />
+        <div className="relative flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-16 bg-[#ffead1] text-[#5a3e2b]">
+            <div className="max-w-lg text-center md:text-left">
+                <h1 className="text-5xl md:text-6xl font-bold leading-tight  text-[#e74a27]">
+                    John's Pizza
+                </h1>
+                <p className="text-lg md:text-xl mt-4 font-medium">
+                    Bringing you the grooviest slices in town, straight from the
+                    past!
+                </p>
+                <div className="mt-6 flex gap-4 justify-center md:justify-start">
+                    <Button
+                        variant="ghost"
+                    >
+                        View Specials
                     </Button>
-                    <Button size="lg" className="gap-4">
-                        Sign up here <MoveRight className="w-4 h-4" />
+                    <Button
+                        variant="default"
+                        className="bg-primary px-6 py-4 hover:scale-95 hover:opacity-80 rounded-full transition-all"
+                    >
+                        Order Now
                     </Button>
                 </div>
             </div>
+
+            {/* 3D Pizza Model */}
+            <div className="w-full md:w-[700px] h-[300px] md:h-[450px] mt-10 md:mt-0">
+                <Canvas>
+                    <ambientLight intensity={0.5} />
+                    <directionalLight position={[10, 10, 5]} intensity={1} />
+                    <Suspense fallback={null}>
+                        <PizzaModel />
+                    </Suspense>
+                    <OrbitControls
+                        enableZoom
+                        minPolarAngle={Math.PI / 4}
+                        maxPolarAngle={Math.PI / 2}
+                    />
+                </Canvas>
+            </div>
         </div>
     );
-}
+};
 
-export { Hero };
+export default Hero;
