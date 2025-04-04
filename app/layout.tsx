@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Shrikhand } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
@@ -17,11 +17,17 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
+const shrikhand = Shrikhand({
+    variable: "--font-shrikhand",
+    subsets: ["latin"],
+    weight: "400",
+});
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Hackhaton boilerplate",
-    description: "A boilerplate for building a hackathon project",
+    title: "John's Pizza",
+    description: "John's Pizza",
 };
 
 export default async function RootLayout({
@@ -36,7 +42,7 @@ export default async function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <body
                 className={cn(
-                    `${inter.className} antialiased bg-background`,
+                    `${inter.className} ${shrikhand.variable} antialiased bg-background`,
                     activeThemeValue ? `theme-${activeThemeValue}` : "",
                     isScaled ? "theme-scaled" : ""
                 )}

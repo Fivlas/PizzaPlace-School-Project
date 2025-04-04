@@ -77,24 +77,25 @@ const PizzaModel = () => {
 
 const Hero = () => {
     return (
-        <div className="relative flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-16 bg-[#ffead1] text-[#5a3e2b]">
+        <div className="relative flex flex-col-reverse md:flex-row items-center justify-between px-6 md:px-16 md:py-16 bg-[#ffead1] text-[#5a3e2b]">
             <div className="max-w-lg text-center md:text-left">
-                <h1 className="text-5xl md:text-6xl font-bold leading-tight  text-[#e74a27]">
+                <h1 className="text-5xl md:text-6xl font-bold leading-tight  text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-11">
                     John's Pizza
                 </h1>
-                <p className="text-lg md:text-xl mt-4 font-medium">
+                <p className="text-lg md:text-xl mt-4 font-medium font-[Shrikhand]">
                     Bringing you the grooviest slices in town, straight from the
                     past!
                 </p>
                 <div className="mt-6 flex gap-4 justify-center md:justify-start">
                     <Button
+                        className="cursor-pointer"
                         variant="ghost"
                     >
                         View Specials
                     </Button>
                     <Button
                         variant="default"
-                        className="bg-primary px-6 py-4 hover:scale-95 hover:opacity-80 rounded-full transition-all"
+                        className="bg-primary px-6 py-4 hover:scale-95 hover:opacity-80 rounded-full transition-all shadow-md cursor-pointer"
                     >
                         Order Now
                     </Button>
@@ -102,7 +103,7 @@ const Hero = () => {
             </div>
 
             {/* 3D Pizza Model */}
-            <div className="w-full md:w-[700px] h-[300px] md:h-[450px] mt-10 md:mt-0">
+            <div className="w-full md:w-[700px] h-[150px] md:h-[450px] md:mt-0">
                 <Canvas>
                     <ambientLight intensity={0.5} />
                     <directionalLight position={[10, 10, 5]} intensity={1} />

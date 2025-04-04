@@ -26,8 +26,8 @@ const Specials = () => {
     return (
         <div className="py-20">
             <div className="text-center space-y-4 mb-12">
-                <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                    Our Signature Pizzas
+                <h2 className="text-4xl font-bold tracking-tight sm:text-5xl font-[Shrikhand] text-[#e74a27] decoration-wavy underline underline-offset-15">
+                    Our Pizzas
                 </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
