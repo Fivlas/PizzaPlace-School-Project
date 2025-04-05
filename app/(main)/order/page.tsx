@@ -12,9 +12,11 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import React, { useEffect } from "react";
-import NumberFlow from '@number-flow/react'
+import React, { useEffect, useState } from "react";
+import NumberFlow from "@number-flow/react";
 import { useRouter } from "next/navigation";
+import { loadStripe } from "@stripe/stripe-js";
+
 
 const pizzas: Pizza[] = [
     {
@@ -83,9 +85,36 @@ const OrderPage = () => {
     const deliveryFee = 2.99;
     const total = subtotal + deliveryFee;
 
-    const handleOrder = () => {
-        console.log("Ordering...");
-        console.log(cart);
+    const [stripePromise, setStripePromise] = useState(() => loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!));
+    const handleOrder = async () => {
+        try {
+            const res = await fetch('/api/payment/create-payment-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    cart
+                }),
+            });
+
+            const { sessionId } = await res.json();
+
+            const stripe = await stripePromise;
+            if (!stripe) {
+                console.error("Stripe is not loaded");
+                return;
+            }
+            const { error } = await stripe.redirectToCheckout({
+                sessionId: sessionId,
+            });
+
+            if (error) {
+                console.error("Payment failed:", error);
+            }
+        } catch (error) {
+            console.error("Error creating payment intent:", error);
+        }
     };
 
     return (
@@ -94,7 +123,9 @@ const OrderPage = () => {
                 <div className="w-full md:w-2/3 md:pr-4">
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            <h1 className="text-2xl font-bold text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">Order</h1>
+                            <h1 className="text-2xl font-bold text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">
+                                Order
+                            </h1>
                             <p className="text-sm text-gray-500">
                                 Order your favorite pizza from our menu.
                             </p>
@@ -133,7 +164,9 @@ const OrderPage = () => {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <div className="font-medium mb-2 leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">Choose your size</div>
+                            <div className="font-medium mb-2 leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">
+                                Choose your size
+                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {sizes.map((size) => (
                                     <Card
@@ -168,7 +201,9 @@ const OrderPage = () => {
                             </div>
                         </div>
 
-                        <div className="font-medium mb-2 leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">Additional Toppings</div>
+                        <div className="font-medium mb-2 leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">
+                            Additional Toppings
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {toppings.map((topping) => (
                                 <Card key={topping.id} className="w-full">
@@ -246,7 +281,10 @@ const OrderPage = () => {
                 </div>
 
                 <div className="w-full md:w-1/3 mt-6 md:mt-0 md:sticky md:top-6">
-                    <h1 onClick={() => router.push("/")} className="cursor-pointer text-5xl md:text-6xl text-center mb-6 font-bold leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-11">
+                    <h1
+                        onClick={() => router.push("/")}
+                        className="cursor-pointer text-5xl md:text-6xl text-center mb-6 font-bold leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-11"
+                    >
                         John's Pizza
                     </h1>
                     <Card>
