@@ -36,10 +36,9 @@ const Footer = () => {
                 <div className="w-full px-8">
                     <div className="pb-12 flex flex-col sm:flex-row items-start justify-between gap-x-8 gap-y-10 px-6 xl:px-0">
                         <div>
-                            {/* Logo */}
-                            <div>
+                            <Link href="/">
                                 <h3 className="text-2xl font-bold leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">John's Pizza</h3>
-                            </div>
+                            </Link>
 
                             <ul className="mt-6 flex items-center gap-4 flex-wrap">
                                 {footerLinks.map(({ title, href }) => (
@@ -57,10 +56,9 @@ const Footer = () => {
                     </div>
                     <Separator className="bg-[#e74a27]" />
                     <div className="py-8 flex flex-col-reverse sm:flex-row items-center justify-between gap-x-2 gap-y-5 px-6 xl:px-0">
-                        {/* Copyright */}
                         <span className="text-muted-foreground">
                             &copy; {new Date().getFullYear()}{" "}
-                            <Link href="/" target="_blank">
+                            <Link href="/">
                                 John's Pizza
                             </Link>
                             . All rights reserved.

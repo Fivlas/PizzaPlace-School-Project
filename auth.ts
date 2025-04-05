@@ -5,7 +5,6 @@ import { sendMail } from "./lib/send-mail";
 import { nextCookies } from "better-auth/next-js";
 import { emailHarmony } from 'better-auth-harmony'
 import { stripe } from "@better-auth/stripe"
-import { plans } from "@/constants/stripe/plans"
 import Stripe from "stripe"
 
 const prisma = new PrismaClient();
@@ -22,10 +21,6 @@ export const auth = betterAuth({
             stripeClient,
             stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
             createCustomerOnSignUp: true,
-            subscription: {
-                enabled: true,
-                plans: plans
-            },
         })
     ],
     session: {

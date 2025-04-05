@@ -11,7 +11,7 @@
   "dependencies": {
     "@better-auth/stripe": "^1.2.4",
     "@hookform/resolvers": "^4.1.3",
-    "@number-flow/react": "^0.5.7",
+    "@number-flow/react": "^0.5.8",
     "@prisma/client": "^6.5.0",
     "@radix-ui/react-avatar": "^1.1.3",
     "@radix-ui/react-checkbox": "^1.1.4",
@@ -59,7 +59,8 @@
     "three": "^0.175.0",
     "uploadthing": "^7.5.2",
     "usehooks-ts": "^3.1.1",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
