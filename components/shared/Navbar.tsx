@@ -97,7 +97,7 @@ const Navbar = () => {
             <div className="relative">
                 <div className="flex items-center gap-2">
                     <Link
-                        href={"/dashboard"}
+                        href={"/order"}
                         className="flex items-center justify-center shadow not-dark:text-muted bg-primary gap-2.5 rounded-4xl py-4 px-8 transition-all hover:opacity-80 text-sm md:text-base duration-200 hover:scale-95"
                     >
                         Zamów

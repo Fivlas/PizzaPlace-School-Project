@@ -33,7 +33,7 @@ const Footer = () => {
     return (
         <div className="flex flex-col pt-20">
             <footer>
-                <div className="max-w-screen-xl mx-auto">
+                <div className="w-full px-8">
                     <div className="pb-12 flex flex-col sm:flex-row items-start justify-between gap-x-8 gap-y-10 px-6 xl:px-0">
                         <div>
                             {/* Logo */}

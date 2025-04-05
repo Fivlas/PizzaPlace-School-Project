@@ -1,3 +1,4 @@
+import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import Marquee from "react-fast-marquee";
 
@@ -36,8 +37,9 @@ export default function RootLayout({
                         📼 70s tunes & steamy slices daily 📼
                     </div>
                 </Marquee>
-                <Navbar />
+                {/* <Navbar /> */}
                 <main>{children}</main>
+                <Footer/>
             </div>
         </div>
     );
