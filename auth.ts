@@ -1,4 +1,4 @@
-import { betterAuth } from "better-auth";
+import { betterAuth, custom } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@prisma/client";
 import { sendMail } from "./lib/send-mail";
@@ -6,8 +6,9 @@ import { nextCookies } from "better-auth/next-js";
 import { emailHarmony } from 'better-auth-harmony'
 import { stripe } from "@better-auth/stripe"
 import Stripe from "stripe"
+import { prisma } from "./lib/prisma";
 
-const prisma = new PrismaClient();
+
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export const auth = betterAuth({
@@ -21,6 +22,22 @@ export const auth = betterAuth({
             stripeClient,
             stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
             createCustomerOnSignUp: true,
+            onEvent: async (event) => {
+                switch (event.type) {
+                    case "checkout.session.completed":
+                        console.log("checkout.session.completed")
+                        break;
+                    case "customer.subscription.updated":
+                        console.log("customer.subscription.updated")
+                        break;
+                    case "customer.subscription.deleted":
+                        console.log("customer.subscription.deleted")
+                        break;
+                }
+            },
+            onCustomerCreate: async (data, request) => {
+                console.log(data)
+            },
         })
     ],
     session: {

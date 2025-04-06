@@ -1,9 +1,8 @@
-// pages/api/checkout_sessions.ts
+import { prisma } from "@/lib/prisma";
 import { CartItem } from "@/store/useOrderStore";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-// Create an instance of Stripe using the secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-02-24.acacia",
 });
@@ -11,6 +10,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: Request) {
     try {
         const { cart } = await req.json();
+
+        const subtotal = cart.reduce((sum: number, item: CartItem) => sum + item.totalPrice, 0);
+        const deliveryFee = 299;
+        const totalAmount = subtotal + deliveryFee;
 
         const lineItems = cart.map((item: CartItem) => {
             const toppingNames = item.toppings?.map((t) => t.name).join(", ") || "No toppings";
@@ -39,12 +42,36 @@ export async function POST(req: Request) {
                         name: "Delivery Fee",
                         description: "Delivery fee",
                     },
-                    unit_amount: 2.99 * 100,
+                    unit_amount: deliveryFee,
                 },
                 quantity: 1,
             }],
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?sessionId={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}`,
+        });
+
+        const order = await prisma.order.create({
+            data: {
+                totalAmount: totalAmount,
+                status: "pending",
+                stripeCheckoutSessionId: paymentSession.id,
+                deliveryFee: deliveryFee,
+                orderItems: {
+                    create: cart.map((item: CartItem) => ({
+                        pizzaName: item.pizza.name,
+                        pizzaSize: item.size.name,
+                        quantity: 1,
+                        unitPrice: item.totalPrice,
+                        totalPrice: item.totalPrice,
+                        toppings: {
+                            create: item.toppings?.map(topping => ({
+                                name: topping.name,
+                                price: topping.price
+                            })) || []
+                        }
+                    }))
+                }
+            }
         });
 
         return NextResponse.json({

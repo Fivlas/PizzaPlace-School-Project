@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
@@ -31,6 +33,7 @@ const Summary = () => {
                 console.error("Stripe is not loaded");
                 return;
             }
+            console.log(sessionId);
             const { error } = await stripe.redirectToCheckout({
                 sessionId: sessionId,
             });

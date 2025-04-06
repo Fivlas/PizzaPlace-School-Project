@@ -91,3 +91,53 @@ model Subscription {
 
   @@map("subscription")
 }
+
+model Order {
+  id                      String         @id @default(uuid()) 
+  totalAmount             Int
+  status                  String         @default("pending")
+  stripeCheckoutSessionId String         
+  deliveryAddress         String?
+  deliveryFee             Int            @default(299)
+  orderItems              OrderItem[]
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+
+  @@map("order")
+}
+
+model OrderItem {
+  id          String       @id @default(uuid())
+  orderId     String
+  order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  pizzaName   String
+  pizzaSize   String
+  quantity    Int          @default(1)
+  unitPrice   Int
+  totalPrice  Int
+  toppings    OrderItemTopping[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("order_item")
+}
+
+model Topping {
+  id          String             @id @default(uuid())
+  name        String
+  price       Int
+  orderItems  OrderItemTopping[]
+
+  @@map("topping")
+}
+
+model OrderItemTopping {
+  id          String    @id @default(uuid())
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  orderItemId String
+  topping     Topping   @relation(fields: [toppingId], references: [id], onDelete: Cascade)
+  toppingId   String
+
+  @@unique([orderItemId, toppingId])
+  @@map("order_item_topping")
+}
