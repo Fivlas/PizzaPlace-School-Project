@@ -2,8 +2,8 @@ import React from 'react'
 import { Card, CardContent, CardDescription, CardTitle } from '../ui/card'
 import Image from 'next/image'
 import NumberFlow from '@number-flow/react'
-import { Button } from '../ui/button'
 import { Topping } from '@/store/useOrderStore'
+import { cn } from '@/lib/utils'
 
 interface ToppingsCardProps {
     topping: Topping;
@@ -12,8 +12,20 @@ interface ToppingsCardProps {
 }
 
 const ToppingsCard = ({ topping, handleToppingChange, selectedToppings }: ToppingsCardProps) => {
+    const isSelected = selectedToppings[topping.id] > 0;
+
+    const toggleSelection = () => {
+        handleToppingChange(topping.id, isSelected ? 0 : 1);
+    };
+
     return (
-        <Card className="w-full">
+        <Card 
+            className={cn(
+                "w-full cursor-pointer transition-all duration-200", 
+                isSelected ? "border-2 border-[#e74a27] bg-orange-50" : ""
+            )}
+            onClick={toggleSelection}
+        >
             <CardContent className="flex items-center gap-2 justify-between">
                 <div className="flex items-center gap-2">
                     <Image
@@ -40,37 +52,18 @@ const ToppingsCard = ({ topping, handleToppingChange, selectedToppings }: Toppin
                         </CardDescription>
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() =>
-                            handleToppingChange(
-                                topping.id,
-                                1
-                            )
-                        }
-                    >
-                        +
-                    </Button>
-                    {selectedToppings[topping.id] || 0}
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() =>
-                            handleToppingChange(
-                                topping.id,
-                                -1
-                            )
-                        }
-                        disabled={
-                            !selectedToppings[
-                            topping.id
-                            ]
-                        }
-                    >
-                        -
-                    </Button>
+                <div className="flex items-center">
+                    {isSelected ? (
+                        <div 
+                            className="w-6 h-6 rounded-full bg-[#e74a27] flex items-center justify-center text-white"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleToppingChange(topping.id, 0);
+                            }}
+                        >
+                            ✓
+                        </div>
+                    ) : null}
                 </div>
             </CardContent>
         </Card>

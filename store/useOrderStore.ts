@@ -68,12 +68,22 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     setSelectedSize: (size) => set({ selectedSize: size }),
 
     handleToppingChange: (id, qty) =>
-        set((state) => ({
-            selectedToppings: {
-                ...state.selectedToppings,
-                [id]: Math.max(0, (state.selectedToppings[id] || 0) + qty),
-            },
-        })),
+        set((state) => {
+            // If qty is 0, remove the topping completely
+            if (qty === 0) {
+                const newSelectedToppings = { ...state.selectedToppings };
+                delete newSelectedToppings[id];
+                return { selectedToppings: newSelectedToppings };
+            }
+            
+            // Otherwise update the quantity
+            return {
+                selectedToppings: {
+                    ...state.selectedToppings,
+                    [id]: qty,
+                },
+            };
+        }),
 
     addToOrder: (toppingsList) => {
         const {

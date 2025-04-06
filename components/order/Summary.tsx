@@ -117,11 +117,7 @@ const Summary = () => {
                                                                 {
                                                                     topping.name
                                                                 }{" "}
-                                                                (x
-                                                                {
-                                                                    topping.quantity
-                                                                }
-                                                                ) -{" "}
+                                                                -{" "}
                                                                 <NumberFlow
                                                                     value={
                                                                         topping.price *

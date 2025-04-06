@@ -11,12 +11,16 @@ export async function POST(req: Request) {
     try {
         const { cart } = await req.json();
 
-        const subtotalInCents = cart.reduce((sum: number, item: CartItem) => sum + (item.totalPrice * 100), 0);
+        const subtotalInCents = cart.reduce(
+            (sum: number, item: CartItem) => sum + item.totalPrice * 100,
+            0
+        );
         const deliveryFeeInCents = 299;
         const totalAmountInCents = subtotalInCents + deliveryFeeInCents;
 
         const lineItems = cart.map((item: CartItem) => {
-            const toppingNames = item.toppings?.map((t) => t.name).join(", ") || "No toppings";
+            const toppingNames =
+                item.toppings?.map((t) => t.name).join(", ") || "No toppings";
             const productName = `${item.pizza.name} (${item.size.name})`;
             const description = `Toppings: ${toppingNames}`;
 
@@ -26,8 +30,14 @@ export async function POST(req: Request) {
                     product_data: {
                         name: productName,
                         description,
+                        metadata: {
+                            size: item.size.name.toString(),
+                            toppings: JSON.stringify(
+                                item.toppings?.map((t) => t.name) || []
+                            ),
+                        },
                     },
-                    unit_amount: item.totalPrice * 100,
+                    unit_amount: Math.round(item.totalPrice * 100),
                 },
                 quantity: 1,
             };
@@ -35,43 +45,46 @@ export async function POST(req: Request) {
 
         const paymentSession = await stripe.checkout.sessions.create({
             mode: "payment",
-            line_items: [...lineItems, {
-                price_data: {
-                    currency: "usd",
-                    product_data: {
-                        name: "Delivery Fee",
-                        description: "Delivery fee",
+            line_items: [
+                ...lineItems,
+                {
+                    price_data: {
+                        currency: "usd",
+                        product_data: {
+                            name: "Delivery Fee",
+                            description: "Delivery fee",
+                        },
+                        unit_amount: deliveryFeeInCents,
                     },
-                    unit_amount: deliveryFeeInCents,
+                    quantity: 1,
                 },
-                quantity: 1,
-            }],
+            ],
             success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?sessionId={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}`,
         });
 
-        const order = await prisma.order.create({
+        await prisma.order.create({
             data: {
+                stripeCheckoutSessionId: paymentSession.id,
                 totalAmount: totalAmountInCents,
                 status: "pending",
-                stripeCheckoutSessionId: paymentSession.id,
                 deliveryFee: deliveryFeeInCents,
                 orderItems: {
                     create: cart.map((item: CartItem) => ({
                         pizzaName: item.pizza.name,
                         pizzaSize: item.size.name,
                         quantity: 1,
-                        unitPrice: item.totalPrice * 100,
-                        totalPrice: item.totalPrice * 100,
+                        unitPrice: Math.round(item.totalPrice * 100),
+                        totalPrice: Math.round(item.totalPrice * 100),
                         toppings: {
-                            create: item.toppings?.map(topping => ({
+                            create: item.toppings?.map((topping) => ({
                                 name: topping.name,
-                                price: topping.price * 100
-                            })) || []
-                        }
-                    }))
-                }
-            }
+                                price: Math.round(topping.price * 100),
+                            })),
+                        },
+                    })),
+                },
+            },
         });
 
         return NextResponse.json({
@@ -80,7 +93,7 @@ export async function POST(req: Request) {
     } catch (error) {
         console.error("Error creating payment session:", error);
         return NextResponse.json(
-            { error: "Failed to create payment session" }, 
+            { error: "Failed to create payment session" },
             { status: 500 }
         );
     }
