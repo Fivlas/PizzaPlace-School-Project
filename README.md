@@ -194,24 +194,18 @@ export function PizzaBuilder() {
 - `GET /api/auth/session` - Get current session
 
 ### Order Routes (`/api/orders/*`)
-- `POST /api/orders/create` - Create new order
-- `GET /api/orders/[id]` - Get order details
-- `PUT /api/orders/[id]` - Update order status
-- `GET /api/orders/user/[userId]` - Get user orders
+- `POST /api/orders/all` - Get all orders
+- `POST /api/remove` - Remove order
 
 ### Payment Routes (`/api/payment/*`)
-- `POST /api/payment/create-intent` - Create payment intent
-- `POST /api/payment/webhook` - Handle Stripe webhooks
-- `GET /api/payment/methods` - Get saved payment methods
+- `POST /api/payment/create-payment-session` - Create payment session
 
 ### Upload Routes (`/api/uploadthing/*`)
 - `POST /api/uploadthing` - Handle file uploads
 - `DELETE /api/uploadthing/[key]` - Delete uploaded files
 
 ### Stats Routes (`/api/stats/*`)
-- `GET /api/stats/sales` - Get sales statistics
-- `GET /api/stats/orders` - Get order analytics
-- `GET /api/stats/users` - Get user statistics
+- `GET /api/stats` - Get all stats
 
 ## 📱 Frontend Routes
 
@@ -223,14 +217,10 @@ export function PizzaBuilder() {
 ### Dashboard Routes (`/dashboard/*`)
 - `/dashboard` - Admin overview
 - `/dashboard/orders` - Order management
-- `/dashboard/users` - User management
-- `/dashboard/analytics` - Business analytics
 
 ### Authentication Routes (`/(auth)/*`)
 - `/login` - User login
 - `/register` - User registration
-- `/forgot-password` - Password recovery
-- `/reset-password` - Password reset
 
 ## 🔄 State Management
 
