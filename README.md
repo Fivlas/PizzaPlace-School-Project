@@ -30,6 +30,139 @@ A modern, full-stack pizza ordering platform built with Next.js, TypeScript, and
 - **Animations**: Framer Motion
 - **Charts**: Recharts
 
+## 🚀 Main Functions & Implementations
+
+### Core Features
+
+#### Authentication System
+```typescript
+// BetterAuth implementation with custom providers
+export async function authOptions() {
+  return {
+    providers: [
+      // Email/password provider
+      // OAuth providers (Google, GitHub)
+    ],
+    callbacks: {
+      // Session handling
+      // JWT token management
+    }
+  }
+}
+```
+
+#### Payment Processing
+```typescript
+// Stripe payment implementation
+export async function createPaymentIntent(amount: number) {
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount,
+    currency: 'usd',
+    // Additional payment options
+  });
+  return paymentIntent;
+}
+```
+
+#### Order Management
+```typescript
+// Order processing and status updates
+export async function createOrder(orderData: OrderData) {
+  const order = await prisma.order.create({
+    data: {
+      // Order details
+      status: 'PENDING',
+      // Additional order information
+    }
+  });
+  return order;
+}
+```
+
+#### 3D Pizza Builder
+```typescript
+// Three.js implementation for pizza customization
+export function PizzaBuilder() {
+  // 3D scene setup
+  // Interactive toppings
+  // Real-time preview
+}
+```
+
+## 🌐 API Routes & Endpoints
+
+### Authentication Routes (`/api/auth/*`)
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+- `GET /api/auth/session` - Get current session
+
+### Order Routes (`/api/orders/*`)
+- `POST /api/orders/create` - Create new order
+- `GET /api/orders/[id]` - Get order details
+- `PUT /api/orders/[id]` - Update order status
+- `GET /api/orders/user/[userId]` - Get user orders
+
+### Payment Routes (`/api/payment/*`)
+- `POST /api/payment/create-intent` - Create payment intent
+- `POST /api/payment/webhook` - Handle Stripe webhooks
+- `GET /api/payment/methods` - Get saved payment methods
+
+### Upload Routes (`/api/uploadthing/*`)
+- `POST /api/uploadthing` - Handle file uploads
+- `DELETE /api/uploadthing/[key]` - Delete uploaded files
+
+### Stats Routes (`/api/stats/*`)
+- `GET /api/stats/sales` - Get sales statistics
+- `GET /api/stats/orders` - Get order analytics
+- `GET /api/stats/users` - Get user statistics
+
+## 📱 Frontend Routes
+
+### Main Routes (`/(main)/*`)
+- `/` - Homepage with featured pizzas
+- `/order` - Order creation and customization
+- `/success` - Order confirmation page
+
+### Dashboard Routes (`/dashboard/*`)
+- `/dashboard` - Admin overview
+- `/dashboard/orders` - Order management
+- `/dashboard/users` - User management
+- `/dashboard/analytics` - Business analytics
+
+### Authentication Routes (`/(auth)/*`)
+- `/login` - User login
+- `/register` - User registration
+- `/forgot-password` - Password recovery
+- `/reset-password` - Password reset
+
+## 🔄 State Management
+
+### Global State (Zustand)
+```typescript
+// Store implementation
+export const useStore = create((set) => ({
+  cart: [],
+  user: null,
+  // Actions
+  addToCart: (item) => set((state) => ({ cart: [...state.cart, item] })),
+  removeFromCart: (id) => set((state) => ({ 
+    cart: state.cart.filter(item => item.id !== id) 
+  })),
+}));
+```
+
+### Server State (React Query)
+```typescript
+// Data fetching implementation
+export function useOrders() {
+  return useQuery({
+    queryKey: ['orders'],
+    queryFn: () => fetchOrders(),
+  });
+}
+```
+
 ## 📦 Installation
 
 1. Clone the repository:
