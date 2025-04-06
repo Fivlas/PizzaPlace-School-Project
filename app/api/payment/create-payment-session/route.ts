@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
     try {
         const { cart } = await req.json();
 
-        console.log(cart)
         const subtotalInCents = cart.reduce((sum: number, item: CartItem) => sum + item.totalPrice * 100, 0);
         const deliveryFeeInCents = 299;
         const totalAmountInCents = subtotalInCents + deliveryFeeInCents;
@@ -62,6 +61,7 @@ export async function POST(req: NextRequest) {
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}`,
         });
 
+        // Create order with proper relationship to toppings
         await prisma.order.create({
             data: {
                 stripeCheckoutSessionId: paymentSession.id,
@@ -77,9 +77,17 @@ export async function POST(req: NextRequest) {
                         totalPrice: Math.round(item.totalPrice * 100),
                         toppings: {
                             create: item.toppings?.map((topping) => ({
-                                name: topping.name,
-                                price: Math.round(topping.price * 100),
-                            })),
+                                topping: {
+                                    connectOrCreate: {
+                                        where: { id: topping.id.toString() || '' },
+                                        create: {
+                                            id: topping.id.toString() || crypto.randomUUID().toString(),
+                                            name: topping.name,
+                                            price: Math.round(topping.price * 100)
+                                        }
+                                    }
+                                }
+                            })) || []
                         },
                     })),
                 },
