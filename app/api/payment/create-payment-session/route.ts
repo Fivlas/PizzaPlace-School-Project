@@ -10,6 +10,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: Request) {
     try {
         const { cart } = await req.json();
+        console.log(cart)
+        console.log(stripe)
 
         const subtotalInCents = cart.reduce(
             (sum: number, item: CartItem) => sum + item.totalPrice * 100,
