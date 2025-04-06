@@ -238,17 +238,6 @@ export const useStore = create((set) => ({
 }));
 ```
 
-### Server State (React Query)
-```typescript
-// Data fetching implementation
-export function useOrders() {
-  return useQuery({
-    queryKey: ['orders'],
-    queryFn: () => fetchOrders(),
-  });
-}
-```
-
 ## 📦 Installation
 
 1. Clone the repository:
