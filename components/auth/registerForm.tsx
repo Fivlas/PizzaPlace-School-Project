@@ -273,8 +273,8 @@ export function RegisterForm({
 
             <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
                 Kontynując, zgadzasz się na nasze{" "}
-                <a href="#">Warunki świadczenia usług</a> i{" "}
-                <a href="#">Politykę prywatności</a>.
+                <Link href="#">Warunki świadczenia usług</Link> i{" "}
+                <Link href="#">Politykę prywatności</Link>.
             </div>
         </div>
     );

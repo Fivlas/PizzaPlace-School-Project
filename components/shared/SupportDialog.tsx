@@ -24,7 +24,6 @@ import { UploadDropzone } from "@/utils/uploadthing";
 export function SupportDialog({ children }: { children: React.ReactNode }) {
     const [subject, setSubject] = useState("");
     const [description, setDescription] = useState("");
-    const [files, setFiles] = useState<FileList | null>(null);
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [isPending, startTransition] = useTransition();
@@ -43,7 +42,6 @@ export function SupportDialog({ children }: { children: React.ReactNode }) {
             setOpen(false);
             setSubject("");
             setDescription("");
-            setFiles(null);
             setEmail("");
 
             toast.success("Support ticket created", {

@@ -3,15 +3,7 @@
 import { Pizza, useOrderStore } from "@/store/useOrderStore";
 
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardTitle,
-} from "@/components/ui/card";
-import Image from "next/image";
 import React, { useEffect } from "react";
-import NumberFlow from "@number-flow/react";
 import Summary from "@/components/order/Summary";
 import PizzaCard from "@/components/order/PizzaCard";
 import SizeCard from "@/components/order/SizeCard";

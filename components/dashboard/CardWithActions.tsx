@@ -16,7 +16,7 @@ interface CardWithActionsProps {
     onClickSecondaryButton: () => void;
 }
 
-const CardWithActions = ({ name, description, badgeValue, BadgeIcon, PrimaryButtonText, SecondaryButtonText, SecondaryButtonIcon, onClickPrimaryButton, onClickSecondaryButton } : CardWithActionsProps) => {
+const CardWithActions = ({ name, description, badgeValue, BadgeIcon, PrimaryButtonText, SecondaryButtonText, SecondaryButtonIcon, onClickPrimaryButton } : CardWithActionsProps) => {
     return (
         <Card>
             <CardContent>

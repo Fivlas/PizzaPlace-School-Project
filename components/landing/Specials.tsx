@@ -8,7 +8,7 @@ import {
 } from "../ui/card";
 import Image from "next/image";
 
-const SpecialPizza = ({title, description, price}: {title: string, description: string, price: number}) => {
+const SpecialPizza = ({title, description} : {title: string, description: string}) => {
     return (
         <Card>
             <CardHeader>
@@ -31,9 +31,9 @@ const Specials = () => {
                 </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <SpecialPizza title="Groovy Margherita" description="Fresh basil, mozzarella, tomatoes" price={9.99}/>
-                <SpecialPizza title="Disco Inferno" description="Spicy pepperoni, jalapeños, red sauce" price={12.49}/>
-                <SpecialPizza title="Funky Fungi" description="Sautéed mushrooms, garlic butter base, smoked provolone" price={11.75}/>
+                <SpecialPizza title="Groovy Margherita" description="Fresh basil, mozzarella, tomatoes"/>
+                <SpecialPizza title="Disco Inferno" description="Spicy pepperoni, jalapeños, red sauce"/>
+                <SpecialPizza title="Funky Fungi" description="Sautéed mushrooms, garlic butter base, smoked provolone"/>
             </div>
         </div>
     );

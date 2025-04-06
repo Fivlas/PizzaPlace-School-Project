@@ -4,9 +4,9 @@ import { OrbitControls } from "@react-three/drei";
 import { Button } from "../ui/button";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-// @ts-ignore
+//@ts-expect-error
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-// @ts-ignore
+//@ts-expect-error
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 
 const PizzaModel = () => {
@@ -19,15 +19,13 @@ const PizzaModel = () => {
         const loadModel = async () => {
             const mtlLoader = new MTLLoader();
             mtlLoader.setPath("/PizzaModel/");
-            //@ts-ignore
-            mtlLoader.load("pizza.mtl", (materials) => {
+            mtlLoader.load("pizza.mtl", (materials: any) => {
                 materials.preload();
 
                 const objLoader = new OBJLoader();
                 objLoader.setMaterials(materials);
                 objLoader.setPath("/PizzaModel/");
-                // @ts-ignore
-                objLoader.load("pizza.obj", (object) => {
+                objLoader.load("pizza.obj", (object: any) => {
                     const textureLoader = new THREE.TextureLoader();
                     const texture = textureLoader.load("PizzaModel/Textures/foodkit-colormap.png");
                     texture.colorSpace = THREE.SRGBColorSpace;

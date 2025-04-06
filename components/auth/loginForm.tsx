@@ -23,7 +23,6 @@ import { loginSchema, LoginValues } from "@/schema/auth/LoginSchema";
 import Link from "next/link";
 import { PasswordInput } from "@/components/ui/passwordInput";
 import LoadingButton from "@/components/ui/LoadingButton";
-import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTransition } from "react";
 import { authClient } from "@/lib/auth-client";
@@ -133,12 +132,12 @@ export function LoginForm({
                                         <div className="grid gap-2">
                                             <div className="flex items-center">
                                                 <FormLabel>Hasło</FormLabel>
-                                                <a
+                                                <Link
                                                     href="#"
                                                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                                                 >
                                                     Zapomniałeś hasła?
-                                                </a>
+                                                </Link>
                                             </div>
 
                                             <FormControl>

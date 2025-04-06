@@ -21,7 +21,7 @@ interface StatsData {
     };
 }
 
-const page = () => {
+const Dashboard = () => {
     const [orders, setOrders] = useState<OrderTableProps[]>([]);
     const [stats, setStats] = useState<StatsData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -105,4 +105,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Dashboard;

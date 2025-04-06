@@ -14,8 +14,7 @@ import {
     ContextMenuItem,
     ContextMenuTrigger,
 } from "../ui/context-menu";
-import { Plus, Search, SquarePen, Trash } from "lucide-react";
-import { Button } from "../ui/button";
+import { Search, Trash } from "lucide-react";
 import { Input } from "../ui/input";
 import {
     Dialog,

@@ -36,7 +36,7 @@ const History = () => {
                                 <p className="text-gray-600">
                                     Our founder, Maria Rodriguez, opened the
                                     first small taqueria with just five tables
-                                    and her grandmother's recipes.
+                                    and her grandmother&apos;s recipes.
                                 </p>
                             </div>
 

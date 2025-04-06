@@ -28,7 +28,7 @@ import React from "react";
 import { useSession } from "@/hooks/useSession";
 import DashboardPageHeader from "@/components/dashboard/DashboardPageHeader";
 
-const page = () => {
+const AccountSettings = () => {
     const session = useSession();
     const form = useForm<AccountSettingsValues>({
         resolver: zodResolver(accountSettingsSchema),
@@ -120,7 +120,7 @@ const page = () => {
                             <CardHeader>
                                 <CardTitle>Password</CardTitle>
                                 <CardDescription>
-                                    Change your password here. After saving, you'll be logged out.
+                                    Change your password here. After saving, you&apos;ll be logged out.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
@@ -176,4 +176,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default AccountSettings;

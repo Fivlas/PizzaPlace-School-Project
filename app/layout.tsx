@@ -1,21 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Shrikhand } from "next/font/google";
+import { Inter, Shrikhand } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { cookies } from "next/headers";
 import { cn } from "@/lib/utils";
 import { ActiveThemeProvider } from "@/context/ColorSchemeContext";
-
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
 
 const shrikhand = Shrikhand({
     variable: "--font-shrikhand",
