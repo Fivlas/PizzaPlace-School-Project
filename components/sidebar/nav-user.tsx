@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/sidebar"
 import { useRouter } from "next/navigation"
 import { useSession } from "@/hooks/useSession"
-import { useCallback } from "react"
 import { authClient } from "@/lib/auth-client"
 
 export function NavUser() {
@@ -39,7 +38,7 @@ export function NavUser() {
   const router = useRouter();
   const session = useSession();
 
-  const handleLogoutClick = useCallback(async () => {
+  const handleLogoutClick = async () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -47,7 +46,7 @@ export function NavUser() {
         }
       }
     })
-  }, [])
+  }
 
   return (
     <SidebarMenu>
