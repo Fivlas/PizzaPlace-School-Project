@@ -10,8 +10,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: Request) {
     try {
         const { cart } = await req.json();
-        console.log(cart)
-        console.log(stripe)
 
         const subtotalInCents = cart.reduce(
             (sum: number, item: CartItem) => sum + item.totalPrice * 100,
@@ -26,11 +24,6 @@ export async function POST(req: Request) {
             const productName = `${item.pizza.name} (${item.size.name})`;
             const description = `Toppings: ${toppingNames}`;
             
-            console.log("Creating Stripe checkout session...");
-            console.log("Success URL:", `${process.env.NEXT_PUBLIC_APP_URL}/success`);
-            console.log("Cart:", cart);
-            console.log("Line Items:", lineItems);
-
             return {
                 price_data: {
                     currency: "usd",
