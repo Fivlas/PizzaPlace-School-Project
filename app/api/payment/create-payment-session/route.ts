@@ -2,12 +2,13 @@ import { prisma } from "@/lib/prisma";
 import { CartItem } from "@/store/useOrderStore";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { NextRequest } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-02-24.acacia",
 });
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
         const { cart } = await req.json();
 

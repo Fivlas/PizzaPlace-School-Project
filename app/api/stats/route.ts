@@ -118,7 +118,7 @@ export const GET = async () => {
     } catch (error) {
         console.error("Error fetching stats:", error);
         return NextResponse.json(
-            { error: "Failed to fetch statistics" },
+            { error: `Failed to fetch statistics ${process.env.NEXT_PUBLIC_TYPE}: ` + error },
             { status: 500 }
         );
     }
