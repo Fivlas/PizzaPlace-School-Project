@@ -51,31 +51,97 @@ export async function authOptions() {
 }
 ```
 
-#### Payment Processing
+#### Order Management System
 ```typescript
-// Stripe payment implementation
-export async function createPaymentIntent(amount: number) {
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount,
-    currency: 'usd',
-    // Additional payment options
-  });
-  return paymentIntent;
-}
+// Types definition
+export type Pizza = {
+    id: number;
+    name: string;
+    price: number;
+    description: string;
+};
+
+export type Size = {
+    id: number;
+    name: string;
+    price: number;
+};
+
+export type Topping = {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    quantity?: number;
+};
+
+export type CartItem = {
+    id: number;
+    pizza: Pizza;
+    size: Size;
+    toppings: (Topping & { quantity: number })[];
+    totalPrice: number;
+};
+
+// Zustand store implementation
+export const useOrderStore = create<OrderState>((set, get) => ({
+    selectedPizza: null,
+    selectedSize: null,
+    selectedToppings: {},
+    cart: [],
+    setSelectedPizza: (pizza) => set({ selectedPizza: pizza }),
+    setSelectedSize: (size) => set({ selectedSize: size }),
+    handleToppingChange: (id, qty) => set((state) => ({
+        selectedToppings: { ...state.selectedToppings, [id]: qty }
+    })),
+    addToOrder: (toppingsList) => {
+        const state = get();
+        if (!state.selectedPizza || !state.selectedSize) return;
+        
+        const cartItem: CartItem = {
+            id: Date.now(),
+            pizza: state.selectedPizza,
+            size: state.selectedSize,
+            toppings: toppingsList.map(t => ({
+                ...t,
+                quantity: state.selectedToppings[t.id] || 0
+            })),
+            totalPrice: calculateItemTotal(state.selectedPizza, state.selectedSize, toppingsList)
+        };
+        
+        set((state) => ({
+            cart: [...state.cart, cartItem],
+            selectedPizza: null,
+            selectedSize: null,
+            selectedToppings: {}
+        }));
+    },
+    // ... other store methods
+}));
 ```
 
-#### Order Management
+#### Payment Processing
 ```typescript
-// Order processing and status updates
-export async function createOrder(orderData: OrderData) {
-  const order = await prisma.order.create({
-    data: {
-      // Order details
-      status: 'PENDING',
-      // Additional order information
-    }
-  });
-  return order;
+// Stripe payment implementation with order validation
+export async function createPaymentIntent(orderData: OrderData) {
+    const { amount, currency, metadata } = orderData;
+    
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(amount * 100), // Convert to cents
+        currency: currency || 'usd',
+        metadata: {
+            orderId: metadata.orderId,
+            userId: metadata.userId
+        },
+        automatic_payment_methods: {
+            enabled: true
+        }
+    });
+    
+    return {
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id
+    };
 }
 ```
 
@@ -83,9 +149,39 @@ export async function createOrder(orderData: OrderData) {
 ```typescript
 // Three.js implementation for pizza customization
 export function PizzaBuilder() {
-  // 3D scene setup
-  // Interactive toppings
-  // Real-time preview
+    const { scene, camera, renderer } = useThree();
+    const { selectedToppings } = useOrderStore();
+    
+    useEffect(() => {
+        // Initialize 3D scene
+        setupScene(scene);
+        
+        // Add pizza base
+        const pizzaBase = createPizzaBase();
+        scene.add(pizzaBase);
+        
+        // Add toppings based on selection
+        Object.entries(selectedToppings).forEach(([id, quantity]) => {
+            if (quantity > 0) {
+                const topping = createTopping(id, quantity);
+                scene.add(topping);
+            }
+        });
+        
+        // Animation loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        };
+        animate();
+        
+        return () => {
+            // Cleanup
+            scene.remove(pizzaBase);
+        };
+    }, [selectedToppings]);
+    
+    return <canvas />;
 }
 ```
 
