@@ -9,7 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-interface SectionCardsProps {
+export interface SectionCardsProps {
     title: string;
     value: string;
     trend: string;

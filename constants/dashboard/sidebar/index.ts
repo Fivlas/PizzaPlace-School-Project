@@ -28,11 +28,11 @@ export const SidebarData = {
             url: "/dashboard/orders",
             icon: ShoppingCart,
         },
-        {
-            title: "API Keys",
-            url: "/dashboard/api-keys",
-            icon: Key,
-        },
+        // {
+            // title: "API Keys",
+            // url: "/dashboard/api-keys",
+            // icon: Key,
+        // },
         // {
         //     title: "Billing",
         //     url: "/dashboard/billing",
@@ -124,21 +124,21 @@ export const SidebarData = {
             isFeedback: true,
         },
     ],
-    projects: [
-        {
-            name: "Design Engineering",
-            url: "#",
-            icon: Frame,
-        },
-        {
-            name: "Sales & Marketing",
-            url: "#",
-            icon: PieChart,
-        },
-        {
-            name: "Travel",
-            url: "#",
-            icon: MapIcon,
-        },
-    ],
+    // projects: [
+    //     {
+    //         name: "Design Engineering",
+    //         url: "#",
+    //         icon: Frame,
+    //     },
+    //     {
+    //         name: "Sales & Marketing",
+    //         url: "#",
+    //         icon: PieChart,
+    //     },
+    //     {
+    //         name: "Travel",
+    //         url: "#",
+    //         icon: MapIcon,
+    //     },
+    // ],
 };

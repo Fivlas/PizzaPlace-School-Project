@@ -88,10 +88,6 @@ const OrdersTable = ({ orders }: { orders: OrderTableProps[] }) => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <Button>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add User
-                </Button>
             </div>
 
             <div className="rounded-md border bg-card">
