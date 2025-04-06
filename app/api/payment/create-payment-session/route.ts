@@ -12,10 +12,8 @@ export async function POST(req: NextRequest) {
     try {
         const { cart } = await req.json();
 
-        const subtotalInCents = cart.reduce(
-            (sum: number, item: CartItem) => sum + item.totalPrice * 100,
-            0
-        );
+        console.log(cart)
+        const subtotalInCents = cart.reduce((sum: number, item: CartItem) => sum + item.totalPrice * 100, 0);
         const deliveryFeeInCents = 299;
         const totalAmountInCents = subtotalInCents + deliveryFeeInCents;
 
