@@ -129,6 +129,7 @@
 
 body {
   @apply overscroll-none bg-transparent;
+  scroll-behavior: smooth;
 }
 
 :root {

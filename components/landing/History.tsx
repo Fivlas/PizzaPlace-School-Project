@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const History = () => {
     return (
-        <div className="py-20">
+        <div id="about" className="py-20">
             <div className="bg-stone-50 rounded-3xl shadow-xl py-20">
                 <div className="container mx-auto md:px-8 px-6">
                     <div className="text-center mb-12">

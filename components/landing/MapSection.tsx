@@ -2,7 +2,7 @@ import React from "react";
 
 const MapSection = () => {
     return (
-        <div className="py-20">
+        <div id="map" className="py-20">
             <div className="py-20 bg-stone-50 rounded-3xl shadow-xl">
                 <div className="container mx-auto md:px-8 px-6">
                     <div className="text-center mb-12">

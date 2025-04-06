@@ -43,14 +43,13 @@ export default async function RootLayout({
             <body
                 className={cn(
                     `${inter.className} ${shrikhand.variable} antialiased bg-background`,
-                    activeThemeValue ? `theme-${activeThemeValue}` : "",
+                    activeThemeValue ? `theme-${activeThemeValue}` : "theme-red",
                     isScaled ? "theme-scaled" : ""
                 )}
             >
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="system"
-                    enableSystem
+                    defaultTheme="light"
                     disableTransitionOnChange
                 >
                     <ActiveThemeProvider initialTheme={activeThemeValue}>

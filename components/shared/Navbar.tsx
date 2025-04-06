@@ -3,29 +3,29 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { Globe, Menu, MessageSquare, Shield, X, Zap } from "lucide-react";
+import { Home, MapPin, Menu, MessageSquare, Pizza, X } from "lucide-react";
 import Image from "next/image";
 
 const menuItems = [
     {
-        name: "Strona główna",
-        icon: <Shield className="w-5 h-auto"/>,
-        redirect: "/",
+        name: "Main",
+        icon: <Home className="w-5 h-auto"/>,
+        redirect: "#main",
     },
     {
-        name: "Oferta",
-        icon: <Zap className="w-5 h-auto"/>,
-        redirect: "/",
+        name: "Specials",
+        icon: <Pizza className="w-5 h-auto"/>,
+        redirect: "#specials",
     },
     {
-        name: "O nas",
-        icon: <Globe className="w-5 h-auto"/>,
-        redirect: "/",
+        name: "Find Us",
+        icon: <MapPin className="w-5 h-auto"/>,
+        redirect: "#map",
     },
     {
-        name: "Kontakt",
+        name: "Contact",
         icon: <MessageSquare className="w-5 h-auto"/>,
-        redirect: "/",
+        redirect: "#contact",
     },
 ];
 
@@ -100,7 +100,7 @@ const Navbar = () => {
                         href={"/order"}
                         className="flex items-center justify-center shadow not-dark:text-muted bg-primary gap-2.5 rounded-4xl py-4 px-8 transition-all hover:opacity-80 text-sm md:text-base duration-200 hover:scale-95"
                     >
-                        Zamów
+                        Order now
                     </Link>
                     <Button
                         className="rounded-full size-12 bg-white hover:bg-white md:hidden"

@@ -77,7 +77,7 @@ const PizzaModel = () => {
 
 const Hero = () => {
     return (
-        <div className="relative flex flex-col-reverse md:flex-row items-center justify-between px-6 md:px-16 md:py-16 bg-[#ffead1] text-[#5a3e2b]">
+        <div id="main" className="relative flex flex-col-reverse md:flex-row items-center justify-between px-6 md:px-16 md:py-16 bg-[#ffead1] text-[#5a3e2b]">
             <div className="max-w-lg text-center md:text-left">
                 <h1 className="text-5xl md:text-6xl font-bold leading-tight  text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-11">
                     John's Pizza

@@ -8,24 +8,20 @@ import Link from "next/link";
 
 const footerLinks = [
     {
-        title: "Strona główna",
-        href: "#",
+        title: "Main",
+        href: "#main",
     },
     {
-        title: "Menu",
-        href: "#",
+        title: "Specials",
+        href: "#specials",
     },
     {
-        title: "Historia",
-        href: "#",
+        title: "Find Us",
+        href: "#map",
     },
     {
-        title: "Kontakt",
-        href: "#",
-    },
-    {
-        title: "Polityka prywatności",
-        href: "#",
+        title: "Contact",
+        href: "#contact",
     },
 ];
 
