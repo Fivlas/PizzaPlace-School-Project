@@ -4,9 +4,9 @@ import { OrbitControls } from "@react-three/drei";
 import { Button } from "../ui/button";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-//@ts-expect-error
+//@ts-expect-error - OBJLoader types are not properly exported in three.js
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-//@ts-expect-error
+//@ts-expect-error - MTLLoader types are not properly exported in three.js
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 
 const PizzaModel = () => {
@@ -19,32 +19,33 @@ const PizzaModel = () => {
         const loadModel = async () => {
             const mtlLoader = new MTLLoader();
             mtlLoader.setPath("/PizzaModel/");
-            mtlLoader.load("pizza.mtl", (materials: any) => {
-                materials.preload();
+            mtlLoader.load("pizza.mtl", (materials: THREE.Material) => {
+                // materials.preload();
 
                 const objLoader = new OBJLoader();
                 objLoader.setMaterials(materials);
                 objLoader.setPath("/PizzaModel/");
-                objLoader.load("pizza.obj", (object: any) => {
+                objLoader.load("pizza.obj", (object: THREE.Group) => {
                     const textureLoader = new THREE.TextureLoader();
                     const texture = textureLoader.load("PizzaModel/Textures/foodkit-colormap.png");
                     texture.colorSpace = THREE.SRGBColorSpace;
 
-                    object.traverse((child: any) => {
-                        if (child.isMesh) {
-                            child.material = new THREE.MeshBasicMaterial({
+                    object.traverse((child: THREE.Object3D) => {
+                        if ((child as THREE.Mesh).isMesh) {
+                            const mesh = child as THREE.Mesh;
+                            mesh.material = new THREE.MeshBasicMaterial({
                                 map: texture,
                                 reflectivity: 1,
                                 color: 0xffffff,
                             });
-                            child.material.needsUpdate = true;
+                            mesh.material.needsUpdate = true;
 
                             if (child.name === "pizza-cutter") {
-                                cutterRef.current = child;
+                                cutterRef.current = mesh;
                             }
 
                             if (child.name === "pizza") {
-                                pizzaRef.current = child;
+                                pizzaRef.current = mesh;
                             }
                         }
                     });
@@ -78,7 +79,7 @@ const Hero = () => {
         <div id="main" className="relative flex flex-col-reverse md:flex-row items-center justify-between px-6 md:px-16 md:py-16 bg-[#ffead1] text-[#5a3e2b]">
             <div className="max-w-lg text-center md:text-left">
                 <h1 className="text-5xl md:text-6xl font-bold leading-tight  text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-11">
-                    John's Pizza
+                    John&apos;s Pizza
                 </h1>
                 <p className="text-lg md:text-xl mt-4 font-medium font-[Shrikhand]">
                     Bringing you the grooviest slices in town, straight from the
