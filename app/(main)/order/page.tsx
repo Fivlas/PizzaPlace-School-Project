@@ -12,9 +12,10 @@ import {
 import Image from "next/image";
 import React, { useEffect } from "react";
 import NumberFlow from "@number-flow/react";
-import { useRouter } from "next/navigation";
 import Summary from "@/components/order/Summary";
-
+import PizzaCard from "@/components/order/PizzaCard";
+import SizeCard from "@/components/order/SizeCard";
+import ToppingsCard from "@/components/order/ToppingsCard";
 
 const pizzas: Pizza[] = [
     {
@@ -90,33 +91,8 @@ const OrderPage = () => {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {pizzas.map((pizza) => (
-                                <Card
-                                    key={pizza.id}
-                                    className={`cursor-pointer transition-all ${selectedPizza?.id === pizza.id
-                                            ? "ring-2 ring-primary"
-                                            : ""
-                                        }`}
-                                    onClick={() => setSelectedPizza(pizza)}
-                                >
-                                    <CardContent>
-                                        <CardTitle>{pizza.name}</CardTitle>
-                                        <CardDescription>
-                                            {pizza.description}
-                                        </CardDescription>
-                                        <div className="mt-2 font-semibold">
-                                            <NumberFlow
-                                                value={pizza.price}
-                                                format={{
-                                                    style: "currency",
-                                                    currencyDisplay:
-                                                        "narrowSymbol",
-                                                    currency: "USD",
-                                                }}
-                                            />
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                            {pizzas.map((pizza, index) => (
+                                <PizzaCard key={index} pizza={pizza} selectedPizza={selectedPizza} setSelectedPizza={setSelectedPizza} />
                             ))}
                         </div>
 
@@ -126,33 +102,7 @@ const OrderPage = () => {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {sizes.map((size) => (
-                                    <Card
-                                        key={size.id}
-                                        className={`cursor-pointer transition-all ${selectedSize?.id === size.id
-                                                ? "ring-2 ring-primary"
-                                                : ""
-                                            }`}
-                                        onClick={() => setSelectedSize(size)}
-                                    >
-                                        <CardContent>
-                                            <CardTitle>{size.name}</CardTitle>
-                                            <div className="mt-1">
-                                                {size.price > 0 ? (
-                                                    <NumberFlow
-                                                        value={size.price}
-                                                        format={{
-                                                            style: "currency",
-                                                            currencyDisplay:
-                                                                "narrowSymbol",
-                                                            currency: "USD",
-                                                        }}
-                                                    />
-                                                ) : (
-                                                    <span>Included</span>
-                                                )}
-                                            </div>
-                                        </CardContent>
-                                    </Card>
+                                    <SizeCard key={size.id} size={size} selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
                                 ))}
                             </div>
                         </div>
@@ -162,67 +112,7 @@ const OrderPage = () => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {toppings.map((topping) => (
-                                <Card key={topping.id} className="w-full">
-                                    <CardContent className="flex items-center gap-2 justify-between">
-                                        <div className="flex items-center gap-2">
-                                            <Image
-                                                src={topping.image}
-                                                alt={topping.name}
-                                                width={50}
-                                                height={50}
-                                                className="rounded-2xl"
-                                            />
-                                            <div className="flex flex-col">
-                                                <CardTitle>
-                                                    {topping.name}
-                                                </CardTitle>
-                                                <CardDescription>
-                                                    <NumberFlow
-                                                        value={topping.price}
-                                                        format={{
-                                                            style: "currency",
-                                                            currencyDisplay:
-                                                                "narrowSymbol",
-                                                            currency: "USD",
-                                                        }}
-                                                    />
-                                                </CardDescription>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Button
-                                                variant="outline"
-                                                size="icon"
-                                                onClick={() =>
-                                                    handleToppingChange(
-                                                        topping.id,
-                                                        1
-                                                    )
-                                                }
-                                            >
-                                                +
-                                            </Button>
-                                            {selectedToppings[topping.id] || 0}
-                                            <Button
-                                                variant="outline"
-                                                size="icon"
-                                                onClick={() =>
-                                                    handleToppingChange(
-                                                        topping.id,
-                                                        -1
-                                                    )
-                                                }
-                                                disabled={
-                                                    !selectedToppings[
-                                                    topping.id
-                                                    ]
-                                                }
-                                            >
-                                                -
-                                            </Button>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <ToppingsCard key={topping.id} topping={topping} handleToppingChange={handleToppingChange} selectedToppings={selectedToppings} />
                             ))}
                         </div>
 

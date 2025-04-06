@@ -44,9 +44,10 @@ type OrderState = {
     addToOrder: (toppingsList: Topping[]) => void;
     removeFromCart: (id: number) => void;
     resetSelections: () => void;
-    calculateSubtotal: () => number;
+    calculateSubtotal: (cartOverride?: CartItem[]) => number;
     calculateTotal: (cartOverride?: CartItem[]) => number;
     total: number;
+    subtotal: number;
 };
 
 export const useOrderStore = create<OrderState>((set, get) => ({
@@ -55,6 +56,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     selectedToppings: {},
     cart: [],
     total: 0,
+    subtotal: 0,
 
     setSelectedPizza: (pizza) => {
         set({
@@ -90,10 +92,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
                 return { ...topping!, quantity: qty };
             });
 
-        const totalPrice =
-            selectedPizza.price +
-            selectedSize.price +
-            activeToppings.reduce((sum, t) => sum + t.price * t.quantity, 0);
+        const totalPrice = selectedPizza.price + selectedSize.price + activeToppings.reduce((sum, t) => sum + t.price * t.quantity, 0);
 
         const newItem: CartItem = {
             id: Date.now(),
@@ -104,8 +103,10 @@ export const useOrderStore = create<OrderState>((set, get) => ({
         };
 
         const newCart = [...cart, newItem];
+        const newSubtotal = get().calculateSubtotal(newCart);
         set({
             cart: newCart,
+            subtotal: newSubtotal,
             total: get().calculateTotal(newCart),
         });
 
@@ -114,8 +115,10 @@ export const useOrderStore = create<OrderState>((set, get) => ({
 
     removeFromCart: (id) => {
         const newCart = get().cart.filter((item) => item.id !== id);
+        const newSubtotal = get().calculateSubtotal(newCart);
         set({
             cart: newCart,
+            subtotal: newSubtotal,
             total: get().calculateTotal(newCart),
         });
     },
@@ -127,8 +130,9 @@ export const useOrderStore = create<OrderState>((set, get) => ({
             selectedToppings: {},
         }),
 
-    calculateSubtotal: () => {
-        return get().cart.reduce((sum, item) => sum + item.totalPrice, 0);
+    calculateSubtotal: (cartOverride?: CartItem[]) => {
+        const cartToUse = cartOverride || get().cart;
+        return cartToUse.reduce((sum, item) => sum + item.totalPrice, 0);
     },
 
     calculateTotal: (cartOverride?: CartItem[]) => {
@@ -137,6 +141,8 @@ export const useOrderStore = create<OrderState>((set, get) => ({
         if (subtotal === 0) {
             return 0;
         }
-        return subtotal + deliveryFee;
+
+        const total = subtotal + deliveryFee;
+        return total;
     },
 }));

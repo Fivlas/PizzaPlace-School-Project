@@ -9,7 +9,7 @@ import { loadStripe } from '@stripe/stripe-js'
 
 const Summary = () => {
     const router = useRouter();
-    const { cart, removeFromCart, total } = useOrderStore();
+    const { cart, removeFromCart, total, subtotal } = useOrderStore();
 
     const [stripePromise, setStripePromise] = useState(() => loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!));
     const handleOrder = async () => {
@@ -71,8 +71,7 @@ const Summary = () => {
                                             value={item.pizza.price}
                                             format={{
                                                 style: "currency",
-                                                currencyDisplay:
-                                                    "narrowSymbol",
+                                                currencyDisplay: "narrowSymbol",
                                                 currency: "USD",
                                             }}
                                         />
@@ -160,7 +159,7 @@ const Summary = () => {
                         <div className="flex justify-between mb-2">
                             <span>Subtotal</span>
                             <NumberFlow
-                                value={total}
+                                value={subtotal}
                                 format={{
                                     style: "currency",
                                     currencyDisplay: "narrowSymbol",
