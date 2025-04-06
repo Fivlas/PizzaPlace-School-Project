@@ -20,7 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 
-const page = () => {
+const Settings = () => {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
@@ -152,4 +152,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Settings;

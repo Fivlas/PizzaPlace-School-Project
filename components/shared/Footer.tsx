@@ -33,7 +33,7 @@ const Footer = () => {
                     <div className="pb-12 flex flex-col sm:flex-row items-start justify-between gap-x-8 gap-y-10 px-6 xl:px-0">
                         <div>
                             <Link href="/">
-                                <h3 className="text-2xl font-bold leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">John's Pizza</h3>
+                                <h3 className="text-2xl font-bold leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-4">John&apos;s Pizza</h3>
                             </Link>
 
                             <ul className="mt-6 flex items-center gap-4 flex-wrap">
@@ -55,7 +55,7 @@ const Footer = () => {
                         <span className="text-muted-foreground">
                             &copy; {new Date().getFullYear()}{" "}
                             <Link href="/">
-                                John's Pizza
+                                John&apos;s Pizza
                             </Link>
                             . All rights reserved.
                         </span>

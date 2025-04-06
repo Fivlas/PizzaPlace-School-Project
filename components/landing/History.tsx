@@ -57,7 +57,7 @@ const History = () => {
                                 </h3>
                                 <p className="text-gray-600">
                                     Our dedication to quality earned us
-                                    recognition as the "Best Mexican Restaurant"
+                                    recognition as the &quot;Best Mexican Restaurant&quot;
                                     in the city for three consecutive years.
                                 </p>
                             </div>

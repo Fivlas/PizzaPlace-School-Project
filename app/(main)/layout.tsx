@@ -1,5 +1,4 @@
 import Footer from "@/components/shared/Footer";
-import Navbar from "@/components/shared/Navbar";
 import Marquee from "react-fast-marquee";
 
 export default function RootLayout({
@@ -24,7 +23,7 @@ export default function RootLayout({
                         🛵 Free delivery in under 30 minutes! 🛵
                     </div>
                     <div className="mx-8">
-                        🌈 Taste the 'za that grooves with your soul 🌈
+                        🌈 Taste the &apos;za that grooves with your soul 🌈
                     </div>
                     <div className="mx-8">
                         🕺 Dine-in special: 2-for-1 on Funky Fridays! 🕺

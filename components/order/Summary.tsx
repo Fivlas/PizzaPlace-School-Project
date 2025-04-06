@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import NumberFlow from '@number-flow/react'
@@ -13,7 +13,7 @@ const Summary = () => {
     const router = useRouter();
     const { cart, removeFromCart, total, subtotal } = useOrderStore();
 
-    const [stripePromise, setStripePromise] = useState(() => loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!));
+    const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
     const handleOrder = async () => {
         try {
             const res = await fetch('/api/payment/create-payment-session', {
@@ -48,7 +48,7 @@ const Summary = () => {
     return (
         <div>
             <h1 onClick={() => router.push("/")} className="cursor-pointer text-5xl md:text-6xl text-center mb-6 font-bold leading-tight text-[#e74a27] font-[Shrikhand] decoration-wavy underline underline-offset-11">
-                John's Pizza
+                John&apos;s Pizza
             </h1>
             <Card>
                 <CardHeader>

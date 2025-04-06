@@ -1,7 +1,6 @@
 "use client"
 import PageHeader from "@/components/dashboard/DashboardPageHeader";
 import OrdersTable from "@/components/dashboard/OrdersTable";
-import { prisma } from "@/lib/prisma";
 import React, { useEffect, useState } from "react";
 
 export interface OrderTableProps {
@@ -18,7 +17,7 @@ export interface OrderTableProps {
     stripeCheckoutSessionId: string;
 }
 
-const page = () => {
+const Orders = () => {
     const [orders, setOrders] = useState<OrderTableProps[]>([]);
 
     useEffect(() => {
@@ -37,4 +36,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Orders;
