@@ -98,7 +98,7 @@ export async function POST(req: Request) {
     } catch (error) {
         console.error("Error creating payment session:", error);
         return NextResponse.json(
-            { error: "Failed to create payment session" },
+            { error: "Failed to create payment session: " + error },
             { status: 500 }
         );
     }
