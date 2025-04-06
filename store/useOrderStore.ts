@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+export const deliveryFee = 2.99;
+
 export type Pizza = {
     id: number;
     name: string;
@@ -43,6 +45,8 @@ type OrderState = {
     removeFromCart: (id: number) => void;
     resetSelections: () => void;
     calculateSubtotal: () => number;
+    calculateTotal: (cartOverride?: CartItem[]) => number;
+    total: number;
 };
 
 export const useOrderStore = create<OrderState>((set, get) => ({
@@ -50,6 +54,7 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     selectedSize: null,
     selectedToppings: {},
     cart: [],
+    total: 0,
 
     setSelectedPizza: (pizza) => {
         set({
@@ -98,14 +103,22 @@ export const useOrderStore = create<OrderState>((set, get) => ({
             totalPrice,
         };
 
-        set({ cart: [...cart, newItem] });
+        const newCart = [...cart, newItem];
+        set({
+            cart: newCart,
+            total: get().calculateTotal(newCart),
+        });
+
         resetSelections();
     },
 
-    removeFromCart: (id) =>
-        set((state) => ({
-            cart: state.cart.filter((item) => item.id !== id),
-        })),
+    removeFromCart: (id) => {
+        const newCart = get().cart.filter((item) => item.id !== id);
+        set({
+            cart: newCart,
+            total: get().calculateTotal(newCart),
+        });
+    },
 
     resetSelections: () =>
         set({
@@ -116,5 +129,14 @@ export const useOrderStore = create<OrderState>((set, get) => ({
 
     calculateSubtotal: () => {
         return get().cart.reduce((sum, item) => sum + item.totalPrice, 0);
+    },
+
+    calculateTotal: (cartOverride?: CartItem[]) => {
+        const cartToUse = cartOverride || get().cart;
+        const subtotal = cartToUse.reduce((sum, item) => sum + item.totalPrice, 0);
+        if (subtotal === 0) {
+            return 0;
+        }
+        return subtotal + deliveryFee;
     },
 }));

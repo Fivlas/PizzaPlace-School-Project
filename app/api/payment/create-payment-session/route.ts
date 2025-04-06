@@ -12,16 +12,23 @@ export async function POST(req: Request) {
     try {
         const { cart } = await req.json();
 
-        const lineItems = cart.map((item: CartItem) => ({
-            price_data: {
-                currency: "usd",
-                product_data: {
-                    name: `${item.pizza.name} (${item.size.name})`,
+        const lineItems = cart.map((item: CartItem) => {
+            const toppingNames = item.toppings?.map((t) => t.name).join(", ") || "No toppings";
+            const productName = `${item.pizza.name} (${item.size.name})`;
+            const description = `Toppings: ${toppingNames}`;
+
+            return {
+                price_data: {
+                    currency: "usd",
+                    product_data: {
+                        name: productName,
+                        description,
+                    },
+                    unit_amount: item.totalPrice * 100,
                 },
-                unit_amount: item.totalPrice * 100,
-            },
-            quantity: 1,
-        }));
+                quantity: 1,
+            };
+        });
 
         const paymentSession = await stripe.checkout.sessions.create({
             mode: "payment",
