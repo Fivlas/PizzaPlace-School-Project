@@ -91,11 +91,10 @@ export const GET = async () => {
                 pizzaSizes[item.pizzaSize] += item.quantity;
 
                 item.toppings.forEach(toppingRelation => {
-                    const toppingName = toppingRelation.name;
-                    if (!toppingPopularity[toppingName]) {
-                        toppingPopularity[toppingName] = 0;
+                    if (!toppingPopularity[toppingRelation.id]) {
+                        toppingPopularity[toppingRelation.id] = 0;
                     }
-                    toppingPopularity[toppingName] += item.quantity;
+                    toppingPopularity[toppingRelation.id] += item.quantity;
                 });
             });
         });
