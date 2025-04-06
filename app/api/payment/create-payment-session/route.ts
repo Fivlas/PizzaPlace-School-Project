@@ -20,9 +20,14 @@ export async function POST(req: Request) {
 
         const lineItems = cart.map((item: CartItem) => {
             const toppingNames =
-                item.toppings?.map((t) => t.name).join(", ") || "No toppings";
+            item.toppings?.map((t) => t.name).join(", ") || "No toppings";
             const productName = `${item.pizza.name} (${item.size.name})`;
             const description = `Toppings: ${toppingNames}`;
+            
+            console.log("Creating Stripe checkout session...");
+            console.log("Success URL:", `${process.env.NEXT_PUBLIC_APP_URL}/success`);
+            console.log("Cart:", cart);
+            console.log("Line Items:", lineItems);
 
             return {
                 price_data: {
