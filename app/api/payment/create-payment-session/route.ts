@@ -11,7 +11,6 @@ export async function POST(req: Request) {
     try {
         const { cart } = await req.json();
 
-        // Calculate subtotal in cents to avoid floating point issues
         const subtotalInCents = cart.reduce((sum: number, item: CartItem) => sum + (item.totalPrice * 100), 0);
         const deliveryFeeInCents = 299;
         const totalAmountInCents = subtotalInCents + deliveryFeeInCents;
