@@ -6,8 +6,8 @@ import {
     PieChart,
     Send,
     Settings2,
-    Users,
-    Map as MapIcon
+    Map as MapIcon,
+    ShoppingCart
 } from "lucide-react";
 
 export const SidebarData = {
@@ -24,9 +24,9 @@ export const SidebarData = {
             isActive: true,
         },
         {
-            title: "Users",
-            url: "/dashboard/users",
-            icon: Users,
+            title: "Orders",
+            url: "/dashboard/orders",
+            icon: ShoppingCart,
         },
         {
             title: "API Keys",

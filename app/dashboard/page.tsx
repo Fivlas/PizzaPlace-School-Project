@@ -1,10 +1,22 @@
+"use client"
 import { SectionCards } from "@/components/dashboard/SectionCards";
 import { ChartAreaInteractive } from "@/components/dashboard/ChartAreaInteractive";
-import { users } from "@/constants/dashboard/users";
-import UsersTable from "@/components/dashboard/UsersTable";
 import { cardsData, chartConfig, chartData } from "@/constants/dashboard/main";
+import { useEffect, useState } from "react";
+import { OrderTableProps } from "./orders/page";
+import OrdersTable from "@/components/dashboard/OrdersTable";
 
 const page = () => {
+    const [orders, setOrders] = useState<OrderTableProps[]>([]);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            const response = await fetch("/api/orders/all");
+            const data = await response.json();
+            setOrders(data);
+        };
+        fetchOrders();
+    }, []);
     return (
         <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
@@ -13,7 +25,7 @@ const page = () => {
                     <ChartAreaInteractive data={chartData} config={chartConfig} />
                 </div>
                 <div className="px-4 lg:px-6">
-                    <UsersTable users={users} />
+                    <OrdersTable orders={orders} />
                 </div>
             </div>
         </div>
