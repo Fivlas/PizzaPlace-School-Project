@@ -61,7 +61,6 @@ export async function POST(req: NextRequest) {
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}`,
         });
 
-        // Create order with proper relationship to toppings
         await prisma.order.create({
             data: {
                 stripeCheckoutSessionId: paymentSession.id,

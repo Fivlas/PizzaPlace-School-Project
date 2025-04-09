@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import NumberFlow from '@number-flow/react'
@@ -8,9 +8,16 @@ import { useRouter } from 'next/navigation'
 import { deliveryFee, useOrderStore } from "@/store/useOrderStore";
 import { Separator } from '../ui/separator'
 import { loadStripe } from '@stripe/stripe-js'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
+import { Label } from '../ui/label'
+import { Input } from '../ui/input'
 
 const Summary = () => {
     const router = useRouter();
+    const [name, setName] = useState("");
+    const [street, setStreet] = useState("");
+    const [phone, setPhone] = useState("");
+
     const { cart, removeFromCart, total, subtotal } = useOrderStore();
 
     const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -190,14 +197,47 @@ const Summary = () => {
                             />
                         </div>
                     </div>
-
-                    <Button
-                        className="w-full mt-4"
-                        disabled={cart.length === 0}
-                        onClick={handleOrder}
-                    >
-                        Place Order
-                    </Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button
+                                className="w-full mt-4"
+                                disabled={cart.length === 0}
+                            >
+                                Place Order
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Delivery Address</DialogTitle>
+                                <DialogDescription>
+                                    Please enter your delivery address below.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="name" className="text-right">
+                                        Name
+                                    </Label>
+                                    <Input id="name" className="col-span-3" onChange={(e) => setName(e.target.value)} />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="street" className="text-right">
+                                        Street
+                                    </Label>
+                                    <Input id="street" className="col-span-3" onChange={(e) => setStreet(e.target.value)} />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="phone" className="text-right">
+                                        Phone number
+                                    </Label>
+                                    <Input id="phone" className="col-span-3" onChange={(e) => setPhone(e.target.value)} />
+                                </div>
+                            </div>
+                            <DialogFooter>
+                                <Button disabled={!name || !street || !phone} onClick={handleOrder}>Confirm Order</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </CardContent>
             </Card>
         </div>
